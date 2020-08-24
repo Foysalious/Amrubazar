@@ -27,20 +27,46 @@
                   <tr>
                     <th scope="row"> {{ $category->id }} </th>
                     <td>{{ $category->name }}</td>
-                    <td>{{ $category->icon_image }}</td>
-                    <td>{{ $category->thumb_image }}</td>
-                    <td>{{ $category->parent_id }}</td>
-                    <td>{{ $category->is_featured }}</td>
+                    <td>
+                        @if ( $category->icon_image == NULL )
+                            No Image Attached
+                        @else
+                            <img src="{{ asset('images/category/' . $category->icon_image ) }}" width="100">
+                        @endif
+                    </td>
+                    <td>
+                        @if ( $category->thumb_image == NULL )
+                            No Image Attached
+                        @else
+                            <img src="{{ asset('images/category/' . $category->thumb_image ) }}" width="100">
+                        @endif
+                    </td>
+
+                    
+                    <td>
+                        @if ( $category->parent_id == 0 )
+                            Primary Category
+                        @else
+                            {{ $category->parent->name }}
+                        @endif
+
+                    </td>
+                    <td>@if($category->is_featured==0)
+                        Featured Category
+                        @else
+                        Not Featured
+                        
+                    @endif</td>
                   
                    
                     <td>
                         <div class="btn-group">
-                            <a href="{{ route('editCategory', $category->slug) }}" class="btn btn-success btn-sm">Update</a>
-                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCategory{{ $category->slug }}">Delete</button>
+                            <a href="{{ route('editCategory', $category->id) }}" class="btn btn-success btn-sm">Update</a>
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCategory{{ $category->id }}">Delete</button>
                         </div>
 
                   <!-- Modal -->
-								<div class="modal fade" id="deleteCategory{{ $category->slug }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal fade" id="deleteCategory{{ $category->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                       <div class="modal-content">
                                         <div class="modal-header">
@@ -51,7 +77,7 @@
                                         </div>
                                         <div class="modal-body">
                                              <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                          <form action="{{ route('deleteCategory', $category->slug ) }}" method="POST">
+                                          <form action="{{ route('deleteCategory', $category->id ) }}" method="POST">
                                               @csrf
                                               <button type="submit" class="btn btn-danger">Delete</button>
                                           </form>

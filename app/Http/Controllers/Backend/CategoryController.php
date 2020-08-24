@@ -67,16 +67,25 @@ class CategoryController extends Controller
         $category = new Category();
         $category->name             = $request->cat_name;
         $category->slug             = Str::slug($request->cat_name);
-        $category->description      = $request->cat_description;
         $category->parent_id        = $request->parent_id;
+        $category->is_featured      = $request->is_featured ? $request->is_featured : 0;
 
-        if ( $request->image )
+        if ( $request->icon_image )
         {
-            $image = $request->file('image');
+            $image = $request->file('icon_image');
             $img = time() . '.' . $image->getClientOriginalExtension();
             $location = public_path('images/category/' . $img);
             Image::make($image)->save($location);
-            $category->image = $img;
+            $category->icon_image = $img;
+        }
+
+        if ( $request->thumb_image )
+        {
+            $image = $request->file('thumb_image');
+            $img = time() . '.' . $image->getClientOriginalExtension();
+            $location = public_path('images/category/' . $img);
+            Image::make($image)->save($location);
+            $category->thumb_image = $img;
         }
 
         $category->save();
@@ -131,25 +140,50 @@ class CategoryController extends Controller
         $category = Category::find($id);
         $category->name             = $request->cat_name;
         $category->slug             = Str::slug($request->cat_name);
-        $category->description      = $request->cat_description;
         $category->parent_id        = $request->parent_id;
+        $category->is_featured      = $request->is_featured ? $request->is_featured : 0;
 
-        if ( $request->image )
+        $upImage = ['icon' => $category->icon_image,'thumb' =>$category->thumb_image];
+        foreach($upImage as $key => $image){
+            
+            if($image){
+                if($key == 'icon'){
+                    if ( File::exists('images/category/' . $category->icon_image )  ){
+                        File::delete('images/category/' . $category->icon_image);
+                    }
+                }
+
+                if($key == 'thumb'){
+                    if ( File::exists('images/category/' . $category->thumb_image )  ){
+                        File::delete('images/category/' . $category->thumb_image);
+                    }
+                }
+            
+            
+        }
+        
+        //Image Upload
+        if ( $request->icon_image )
         {
-            // Delete Existing Image
-            if ( File::exists('images/category/' . $category->image ) ){
-                File::delete('images/category/' . $category->image);
-            }
-            // Upload New Image
-            $image = $request->file('image');
+            $image = $request->file('icon_image');
             $img = time() . '.' . $image->getClientOriginalExtension();
             $location = public_path('images/category/' . $img);
             Image::make($image)->save($location);
-            $category->image = $img;
+            $category->icon_image = $img;
         }
 
-        $category->save();
+        if ( $request->thumb_image )
+        {
+            $image = $request->file('thumb_image');
+            $img = time() . '.' . $image->getClientOriginalExtension();
+            $location = public_path('images/category/' . $img);
+            Image::make($image)->save($location);
+            $category->thumb_image = $img;
+        }
+        
 
+        $category->save();
+    }
         return redirect()->route('manageCategory');
     }
 
@@ -161,10 +195,14 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category, $id)
     {
+
+        
+
+        
         $category = Category::find($id);
 
         if ( !is_null($category) ){
-            // If it is a Parent Category, We Will Delete all it's Sub Category Too
+         
             if ( $category->parent_id == 0 )
             {
                 $sub_cat = Category::orderBy('name', 'asc')->where('parent_id', $category->id)->get();
@@ -177,10 +215,27 @@ class CategoryController extends Controller
                 }
             }
 
-            // Delete Category Image
-            if ( File::exists('images/category/' . $category->image ) ){
-                        File::delete('images/category/' . $category->image);
+
+            $upImage = ['icon' => $category->icon_image,'thumb' =>$category->thumb_image];
+            foreach($upImage as $key => $image){
+                
+                if($image){
+                    if($key == 'icon'){
+                        if ( File::exists('images/category/' . $category->icon_image )  ){
+                            File::delete('images/category/' . $category->icon_image);
+                        }
+                    }
+
+                    if($key == 'thumb'){
+                        if ( File::exists('images/category/' . $category->thumb_image )  ){
+                            File::delete('images/category/' . $category->thumb_image);
+                        }
+                    }
+                }
+                
             }
+            // Delete Category Image
+         
             $category->delete(); 
         }
         return redirect()->route('manageCategory');
