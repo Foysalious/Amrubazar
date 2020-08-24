@@ -31,3 +31,15 @@ Route::group(['prefix' => '/categories'], function(){
     // Delete Category From Manage
     Route::post('/delete/{id}', 'Backend\CategoryController@destroy')->name('deleteCategory');
 });
+
+Route::group(['prefix' => '/AddImage'], function(){
+    Route::get('/manage', 'Backend\AddImageController@index')->name('manageImage');
+    // Show Create Page and Store after Submit
+    Route::get('/create', 'Backend\AddImageController@create')->name('createImage');
+    Route::post('/create', 'Backend\AddImageController@store')->name('storeImage');
+    // Show Edit Page and Update after Submit
+    Route::get('/edit/{id}', 'Backend\AddImageController@edit')->name('editImage');
+    Route::post('/edit/{id}', 'Backend\AddImageController@update')->name('updateImage');
+    // Delete AddImage From Manage
+    Route::post('/delete/{id}', 'Backend\AddImageController@destroy')->name('deleteImage');
+});

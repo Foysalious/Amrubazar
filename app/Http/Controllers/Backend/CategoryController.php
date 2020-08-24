@@ -160,7 +160,7 @@ class CategoryController extends Controller
                 }
             
             
-        }
+        } 
         
         //Image Upload
         if ( $request->icon_image )

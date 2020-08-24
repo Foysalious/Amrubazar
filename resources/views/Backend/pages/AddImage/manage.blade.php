@@ -11,11 +11,9 @@
           <thead class="thead-dark">
             <tr>
               <th scope="col">ID</th>
-              <th scope="col">Name</th>
-              <th scope="col">Icon Image</th>
-              <th scope="col">Thumb Image</th>
-              <th scope="col">Parent Catgory</th>
-              <th scope="col">Is Featured</th>
+              <th scope="col">Left Side AD</th>
+              <th scope="col">Right Side AD</th>
+              <th scope="col">Bottom AD</th>
               <th scope="col">Action</th>
 
             </tr>
@@ -23,61 +21,55 @@
           <tbody>
  
 
-              @foreach( $categories as $category )
+              @foreach( $images as $image )
                   <tr>
-                    <th scope="row"> {{ $category->id }} </th>
-                    <td>{{ $category->name }}</td>
-                    <td>
-                        @if ( $category->icon_image == NULL )
-                            No Image Attached
-                        @else
-                            <img src="{{ asset('images/category/' . $category->icon_image ) }}" width="100">
-                        @endif
-                    </td>
-                    <td>
-                        @if ( $category->thumb_image == NULL )
-                            No Image Attached
-                        @else
-                            <img src="{{ asset('images/category/' . $category->thumb_image ) }}" width="100">
-                        @endif
-                    </td>
-
+                    <th scope="row"> {{ $image->id }} </th>
                     
                     <td>
-                        @if ( $category->parent_id == 0 )
-                            Primary Category
+                        @if ( $image->left_image == NULL )
+                            No Image Attached
                         @else
-                            {{ $category->parent->name }}
+                            <img src="{{ asset('images/addImages/' . $image->left_image ) }}" width="100">
                         @endif
-
                     </td>
-                    <td>@if($category->is_featured==0)
-                        Featured Category
+                    <td>
+                        @if ( $image->right_image	 == NULL )
+                            No Image Attached
                         @else
-                        Not Featured
-                        
-                    @endif</td>
+                            <img src="{{ asset('images/addImages/' . $image->right_image	 ) }}" width="100">
+                        @endif
+                    </td>
+
+                    <td>
+                        @if ( $image->bottom_image	 == NULL )
+                            No Image Attached
+                        @else
+                            <img src="{{ asset('images/addImages/' . $image->bottom_image	 ) }}" width="100">
+                        @endif
+                    </td>
+
+                  
                   
                    
                     <td>
                         <div class="btn-group">
-                            <a href="{{ route('editCategory', $category->id) }}" class="btn btn-success btn-sm">Update</a>
-                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCategory{{ $category->id }}">Delete</button>
+                            <a href="{{ route('editImage', $image->id) }}" class="btn btn-success btn-sm">Update</a>
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCategory{{ $image->id }}">Delete</button>
                         </div>
 
                   <!-- Modal -->
-								<div class="modal fade" id="deleteCategory{{ $category->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal fade" id="deleteCategory{{ $image->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">Do You want to delete this category?</h5>
+                                          <h5 class="modal-title" id="exampleModalLabel">Do You want to delete this Image?</h5>
                                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                           </button>
                                         </div>
                                         <div class="modal-body">
                                              <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                          <form action="{{ route('deleteCategory', $category->id ) }}" method="POST">
+                                          <form action="{{ route('deleteImage', $image->id ) }}" method="POST">
                                               @csrf
                                               <button type="submit" class="btn btn-danger">Delete</button>
                                           </form>
