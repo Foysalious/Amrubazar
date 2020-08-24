@@ -1,0 +1,1 @@
+@extends('Backend.template.layout');
