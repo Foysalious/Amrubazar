@@ -5,8 +5,8 @@ use App\Http\Controllers\Controller;
 use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Image;
-use File;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
@@ -197,7 +197,7 @@ class CategoryController extends Controller
     {
 
         
-
+ 
         
         $category = Category::find($id);
 

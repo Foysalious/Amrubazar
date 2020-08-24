@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\AddImage;
+use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class AddImageController extends Controller
 {
@@ -41,30 +44,32 @@ class AddImageController extends Controller
 
         if ( $request->left_image )
         {
-            $image = $request->file('left_image');
-            $img = time() . '.' . $image->getClientOriginalExtension();
-            $location = public_path('images/addImage/' . $img);
-            Image::make($image)->save($location);
-            $AddImage->icon_image = $img;
+            $image1 = $request->file('left_image');
+            $img1 = time().Str::random(12) . '.' . $image1->getClientOriginalExtension();
+            $location = public_path('images/addImages/' . $img1);
+            Image::make($image1)->save($location);
+            $AddImage->left_image = $img1;
         }
 
         if ( $request->right_image )
         {
-            $image = $request->file('thumb_image');
-            $img = time() . '.' . $image->getClientOriginalExtension();
-            $location = public_path('images/addImage/' . $img);
-            Image::make($image)->save($location);
-            $AddImage->thumb_image = $img;
+            $image2 = $request->file('right_image');
+            $img2 = time().Str::random(12) . '.' . $image2->getClientOriginalExtension();
+            $location = public_path('images/addImages/' . $img2);
+            Image::make($image2)->save($location);
+            $AddImage->right_image = $img2;
         }
 
         if ( $request->bottom_image )
         {
-            $image = $request->file('bottom_image');
-            $img = time() . '.' . $image->getClientOriginalExtension();
-            $location = public_path('images/addImage/' . $img);
-            Image::make($image)->save($location);
-            $AddImage->bottom_image = $img;
+            $image3 = $request->file('bottom_image');
+            $img3 = time().Str::random(12) . '.' . $image3->getClientOriginalExtension();
+            $location = public_path('images/addImages/' . $img3);
+            Image::make($image3)->save($location);
+            $AddImage->bottom_image = $img3;
         }
+        $AddImage->save();
+        return redirect()->route('manageImage');
     }
 
     /**
@@ -84,9 +89,10 @@ class AddImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit(AddImage $AddImage,$id)
+    {   
+        $image = AddImage::find($id);
+        return view('Backend.pages.AddImage.edit',compact('image'));
     }
 
     /**
@@ -96,10 +102,41 @@ class AddImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,AddImage $AddImage, $id)
     {
-        //
+        $AddImage = AddImage::find($id);
+
+       
+        $uploadImages = ['left_image' => $request->left_image,'right_image' =>$request->right_image,'bottom_image' =>$request->bottom_image];
+        
+        foreach($uploadImages as $key => $image){
+            if($image){
+
+                $imageName = time().Str::random(12).'.png';
+                Image::make($image)->encode('png', 100)->save(public_path('images/addImages/'.$imageName));
+
+                if(File::exists(public_path('images/addImages/'.$AddImage[$key]))){
+                    File::delete(public_path('images/addImages/'.$AddImage[$key]));
+                }
+
+
+                $AddImage[$key] = $imageName;
+            }
+        }
+       
+        $AddImage->save();
+        return redirect()->route('manageImage');
+
     }
+            
+
+    //Handle File Upload
+          
+               
+                
+
+             
+             
 
     /**
      * Remove the specified resource from storage.
@@ -107,8 +144,44 @@ class AddImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(AddImage $addImage, $id)
     {
-        //
+        $addImage = AddImage::find($id);
+
+        if ( !is_null($addImage) ){
+         
+      
+
+
+            $upImage = ['left' => $addImage->left_image,'right' =>$addImage->right_image,'bottom' =>$addImage->bottom_image];
+            foreach($upImage as $key => $image){
+                
+                if($image){
+                    if($key == 'left'){
+                        if ( File::exists('images/AddImage/' . $addImage->left_image )  ){
+                            File::delete('images/AddImage/' . $addImage->left_image);
+                        }
+                    }
+
+                    if($key == 'right'){
+                        if ( File::exists('images/AddImage/' . $addImage->right_image )  ){
+                            File::delete('images/AddImage/' . $addImage->right_image);
+                        }
+                    }
+
+                    if($key == 'bottom'){
+                        if ( File::exists('images/AddImage/' . $addImage->bottom_image )  ){
+                            File::delete('images/AddImage/' . $addImage->bottom_image);
+                        }
+                    }
+                }
+                
+            }
+            // Delete Category Image
+         
+            $addImage->delete(); 
+        }
+        return redirect()->route('manageImage');
     }
-}
+    }
+
