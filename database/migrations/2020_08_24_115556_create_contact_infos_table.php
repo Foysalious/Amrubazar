@@ -15,11 +15,12 @@ class CreateContactInfosTable extends Migration
     {
         Schema::create('contact_infos', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('phone_Number')->nullable();
-            $table->text('address')->nullable();
-            $table->text('Facebook')->nullable();
-            $table->text('youtube')->nullable();
-            $table->text('instagram')->nullable();
+            $table->string('phone_Number')->nullable();
+            $table->string('address')->nullable();
+            $table->string('Facebook')->nullable();
+            $table->string('youtube')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('email')->nullable();
         });
     }
 

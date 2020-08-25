@@ -43,3 +43,15 @@ Route::group(['prefix' => '/AddImage'], function(){
     // Delete AddImage From Manage
     Route::post('/delete/{id}', 'Backend\AddImageController@destroy')->name('deleteImage');
 });
+
+Route::group(['prefix' => '/ContactInfo'], function(){
+    Route::get('/manage', 'Backend\ContactInfoController@index')->name('manageContact');
+    // Show Create Page and Store after Submit
+    Route::get('/create', 'Backend\ContactInfoController@create')->name('createContact');
+    Route::post('/create', 'Backend\ContactInfoController@store')->name('storeContact');
+    // Show Edit Page and Update after Submit
+    Route::get('/edit/{id}', 'Backend\ContactInfoController@edit')->name('editContact');
+    Route::post('/edit/{id}', 'Backend\ContactInfoController@update')->name('updateContact');
+    // Delete AddImage From Manage
+    Route::post('/delete/{id}', 'Backend\ContactInfoController@destroy')->name('deleteContact');
+});
