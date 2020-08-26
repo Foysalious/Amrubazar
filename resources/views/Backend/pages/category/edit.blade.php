@@ -36,15 +36,6 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label>Category Thumbnail</label><br>
-            @if ( $category->image == NULL )
-              No Image Uploaded
-            @else 
-              <img src="{{ asset('images/category/' . $category->image ) }}" width="100"><br><br>
-            @endif
-                <input type="file" name="image" class="form-control-file">
-            </div>
 
             <div class="form-group">
                 <label>Category Icon</label>

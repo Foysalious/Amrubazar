@@ -148,48 +148,25 @@ class CategoryController extends Controller
         $category->parent_id        = $request->parent_id;
         $category->is_featured      = $request->is_featured ? $request->is_featured : 0;
 
-        $upImage = ['icon' => $category->icon_image,'thumb' =>$category->thumb_image];
+        $upImage = ['icon_image' => $request->icon_image,'thumb_image' =>$request->thumb_image];
         foreach($upImage as $key => $image){
             
             if($image){
-                if($key == 'icon'){
-                    if ( File::exists('images/category/' . $category->icon_image )  ){
-                        File::delete('images/category/' . $category->icon_image);
-                    }
+                $imageName = time().Str::random(12).'.png';
+                Image::make($image)->encode('png', 100)->save(public_path('images/category/'.$imageName));
+
+                if(File::exists(public_path('images/category/'.$category[$key]))){
+                    File::delete(public_path('images/category/'.$category[$key]));
                 }
 
-                if($key == 'thumb'){
-                    if ( File::exists('images/category/' . $category->thumb_image )  ){
-                        File::delete('images/category/' . $category->thumb_image);
-                    }
-                }
-            
+
+                $category[$key] = $imageName;
             
         } 
-        
-        //Image Upload
-        if ( $request->icon_image )
-        {
-            $image = $request->file('icon_image');
-            $img = time() .Str::random(12). '.' . $image->getClientOriginalExtension();
-            $location = public_path('images/category/' . $img);
-            Image::make($image)->save($location);
-            $category->icon_image = $img;
-        }
-
-        if ( $request->thumb_image )
-        {
-            $image = $request->file('thumb_image');
-            $img = time() .Str::random(12). '.' . $image->getClientOriginalExtension();
-            $location = public_path('images/category/' . $img);
-            Image::make($image)->save($location);
-            $category->thumb_image = $img;
-        }
-        
-
-        $category->save();
     }
-        return redirect()->route('manageCategory');
+        
+    $category->save();
+    return redirect()->route('manageCategory');
     }
 
     /**
