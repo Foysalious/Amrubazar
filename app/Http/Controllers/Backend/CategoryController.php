@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Brian2694\Toastr\Facades\Toastr;
+
 
 class CategoryController extends Controller
 {
@@ -73,7 +75,7 @@ class CategoryController extends Controller
         if ( $request->icon_image )
         {
             $image = $request->file('icon_image');
-            $img = time() . '.' . $image->getClientOriginalExtension();
+            $img = time() .Str::random(12). '.' . $image->getClientOriginalExtension();
             $location = public_path('images/category/' . $img);
             Image::make($image)->save($location);
             $category->icon_image = $img;
@@ -82,13 +84,16 @@ class CategoryController extends Controller
         if ( $request->thumb_image )
         {
             $image = $request->file('thumb_image');
-            $img = time() . '.' . $image->getClientOriginalExtension();
+            $img = time() .Str::random(12). '.' . $image->getClientOriginalExtension();
             $location = public_path('images/category/' . $img);
             Image::make($image)->save($location);
             $category->thumb_image = $img;
         }
 
         $category->save();
+
+        Toastr::success('Messages in here', 'Title', ["positionClass" => "toast-top-center"]);
+
 
         // Write Flash Message
 
@@ -166,7 +171,7 @@ class CategoryController extends Controller
         if ( $request->icon_image )
         {
             $image = $request->file('icon_image');
-            $img = time() . '.' . $image->getClientOriginalExtension();
+            $img = time() .Str::random(12). '.' . $image->getClientOriginalExtension();
             $location = public_path('images/category/' . $img);
             Image::make($image)->save($location);
             $category->icon_image = $img;
@@ -175,7 +180,7 @@ class CategoryController extends Controller
         if ( $request->thumb_image )
         {
             $image = $request->file('thumb_image');
-            $img = time() . '.' . $image->getClientOriginalExtension();
+            $img = time() .Str::random(12). '.' . $image->getClientOriginalExtension();
             $location = public_path('images/category/' . $img);
             Image::make($image)->save($location);
             $category->thumb_image = $img;

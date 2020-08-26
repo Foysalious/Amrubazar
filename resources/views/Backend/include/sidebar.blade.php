@@ -32,6 +32,17 @@
            
               
           </ul>
+
+          <ul id="sidebarnav" class="p-t-30">
+            <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-receipt"></i><span class="hide-menu">Newsletter Email </span></a>
+                <ul aria-expanded="false" class="collapse  first-level">
+                <li class="sidebar-item"><a href="{{route('letter')}}" class="sidebar-link"><i class="mdi mdi-note-outline"></i><span class="hide-menu"> Subscribed Mail </span></a></li>
+                   
+                </ul>
+         </li>
+       
+          
+      </ul>
      
               
           

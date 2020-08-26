@@ -37,6 +37,16 @@ class ContactInfoController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'phone_Number'  => 'required|max:255',
+            'address'  => 'required|max:255',
+        ],
+        [
+            'phone_Number.required'     => 'Please Insert a Phone Name',
+            'phone_Number.required'     => 'Please Insert a Phone Name',
+        ]);
+       
+       
         $contacts = new ContactInfo();
         $contacts->phone_Number             = $request->phone_Number;
         $contacts->address             = $request->address;

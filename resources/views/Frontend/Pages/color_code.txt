@@ -1,0 +1,11 @@
+h2{
+	color: #252924
+}
+p{
+	color: #989898
+}
+border{
+	color : #e5e5e5
+}
+pink color{ color: #d92173 }
+orange color { #fc7052 }

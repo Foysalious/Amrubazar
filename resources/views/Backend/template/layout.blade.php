@@ -93,7 +93,7 @@
     <!-- All Jquery -->
     <!-- ============================================================== -->
     @include('Backend.include.script')
-
+    {!! Toastr::message() !!}
 </body>
 
 

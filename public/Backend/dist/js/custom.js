@@ -71,6 +71,9 @@ $(function() {
         wheelPropagation: !0
     });
 
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
     /*var ps = new PerfectScrollbar('.message-body');
     var ps = new PerfectScrollbar('.notifications');
     var ps = new PerfectScrollbar('.scroll-sidebar');

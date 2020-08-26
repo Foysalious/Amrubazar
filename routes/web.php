@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/front', 'Frontend\homepageController@index');
+
+
 
 Route::get('/', function () {
     return view('Backend.template.layout');
@@ -30,6 +33,8 @@ Route::group(['prefix' => '/categories'], function(){
     Route::post('/edit/{id}', 'Backend\CategoryController@update')->name('updateCategory');
     // Delete Category From Manage
     Route::post('/delete/{id}', 'Backend\CategoryController@destroy')->name('deleteCategory');
+    Route::get('/newsLetter', 'Frontend\homepageController@newsLetter')->name('letter');
+
 });
 
 Route::group(['prefix' => '/AddImage'], function(){
@@ -55,3 +60,7 @@ Route::group(['prefix' => '/ContactInfo'], function(){
     // Delete AddImage From Manage
     Route::post('/delete/{id}', 'Backend\ContactInfoController@destroy')->name('deleteContact');
 });
+
+
+    
+   
