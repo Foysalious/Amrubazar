@@ -12,7 +12,7 @@
                 <input type="text" name="cat_name" class="form-control" value="{{ $category->name }}">
             </div>
 
-         <div>Nice </div>
+      
 
             <div class="form-group">
                 <label>Parent Category</label>
