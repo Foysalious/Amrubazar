@@ -92,7 +92,7 @@ class CategoryController extends Controller
 
         $category->save();
 
-        Toastr::success('Messages in here', 'Title', ["positionClass" => "toast-top-center"]);
+        Toastr::success('Category Saved');
 
 
         // Write Flash Message
@@ -166,6 +166,8 @@ class CategoryController extends Controller
     }
         
     $category->save();
+    Toastr::success('Category Updated');
+
     return redirect()->route('manageCategory');
     }
 
@@ -219,6 +221,8 @@ class CategoryController extends Controller
             // Delete Category Image
          
             $category->delete(); 
+            Toastr::warning('Category Deleted');
+
         }
         return redirect()->route('manageCategory');
     }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Brian2694\Toastr\Facades\Toastr;
 
 class AddImageController extends Controller
 {
@@ -40,8 +41,9 @@ class AddImageController extends Controller
      */
     public function store(Request $request)
     {
-        $AddImage = new AddImage();
-
+        $AddImage = AddImage::orderBy('id', 'asc')->get();
+        if (count($AddImage) == NULL) {
+            $AddImage = new AddImage();
         if ( $request->left_image )
         {
             $image1 = $request->file('left_image');
@@ -69,7 +71,16 @@ class AddImageController extends Controller
             $AddImage->bottom_image = $img3;
         }
         $AddImage->save();
+        Toastr::success('Banner Image Created');
+
         return redirect()->route('manageImage');
+    }else {
+        //write unsuccess message
+        Toastr::error('Banner Already Added');
+
+        return redirect()->route('manageImage');
+    }
+
     }
 
     /**
@@ -125,6 +136,8 @@ class AddImageController extends Controller
         }
        
         $AddImage->save();
+        Toastr::success('Banner Image Updated');
+
         return redirect()->route('manageImage');
 
     }
@@ -180,6 +193,8 @@ class AddImageController extends Controller
             // Delete Category Image
          
             $addImage->delete(); 
+            Toastr::error('Banner Image Deleted');
+
         }
         return redirect()->route('manageImage');
     }

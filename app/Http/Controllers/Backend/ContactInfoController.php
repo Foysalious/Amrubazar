@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\ContactInfo;
+use Brian2694\Toastr\Facades\Toastr;
+
 
 class ContactInfoController extends Controller
 {
@@ -55,6 +57,8 @@ class ContactInfoController extends Controller
         $contacts->instagram        = $request->instagram;
         $contacts->email        = $request->email;
         $contacts->save();
+        Toastr::success('Contact info Created Succesfully');
+
 
         return redirect()->route('manageContact');
     }
@@ -105,6 +109,9 @@ class ContactInfoController extends Controller
         $category->email        = $request->email;
         $category->save();
 
+        Toastr::success('Banner Image Updated');
+
+
         return redirect()->route('manageContact');
     }
 
@@ -119,6 +126,8 @@ class ContactInfoController extends Controller
         $ContactInfo=ContactInfo::find($id);
         if ( !is_null($ContactInfo) ){
             $ContactInfo->delete(); 
+            Toastr::warning('Banner Image Deleted');
+
         }
         return redirect()->route('manageContact');
     }
